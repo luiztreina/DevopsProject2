@@ -4,11 +4,21 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      ECR_REPO_NAME:
+        description: 'Repository name in ECR'
+        required: true
+        default: 'amazon-prime'
+      AWS_ACCOUNT_ID:
+        description: 'AWS Account ID'
+        required: true
+        default: '123456789012'
 
 env:
-  ECR_REPO_NAME: amazon-prime
+  ECR_REPO_NAME: ${{ github.event.inputs.ECR_REPO_NAME || 'amazon-prime' }}
   AWS_REGION: us-east-1
-  AWS_ACCOUNT_ID: 123456789012
+  AWS_ACCOUNT_ID: ${{ github.event.inputs.AWS_ACCOUNT_ID || '123456789012' }}
   SONAR_PROJECT_KEY: amazon-prime
   SONAR_HOST_URL: http://your-sonarqube-url:9000
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
